@@ -13,7 +13,10 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['icon.svg', 'apple-touch-icon.png'],
+        injectRegister: 'script',
+        devOptions: {
+          enabled: true, // Habilita PWA en desarrollo para poder probarla
+        },
         manifest: {
           name: 'SixPackCreator',
           short_name: 'SixPack',
@@ -21,31 +24,24 @@ export default defineConfig(({ mode }) => {
           theme_color: '#181411',
           background_color: '#181411',
           display: 'standalone',
-          scope: '/sixPack/',
-          start_url: '/sixPack/',
           icons: [
             {
-              src: 'icon.svg',
+              src: 'pwa-192x192.png',
               sizes: '192x192',
-              type: 'image/svg+xml',
-              purpose: 'any'
+              type: 'image/png'
             },
             {
-              src: 'icon.svg',
+              src: 'pwa-512x512.png',
               sizes: '512x512',
-              type: 'image/svg+xml',
-              purpose: 'any'
+              type: 'image/png'
             },
             {
-              src: 'icon.svg',
+              src: 'pwa-512x512.png',
               sizes: '512x512',
-              type: 'image/svg+xml',
-              purpose: 'maskable'
+              type: 'image/png',
+              purpose: 'any maskable'
             }
           ]
-        },
-        devOptions: {
-          enabled: true
         }
       })
     ],
@@ -56,6 +52,11 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': path.resolve(__dirname, '.'),
       },
+    },
+    server: {
+      // HMR is disabled in AI Studio via DISABLE_HMR env var.
+      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
+      hmr: process.env.DISABLE_HMR !== 'true',
     },
   };
 });
