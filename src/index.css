@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-primary: #f27f0d;
+  --color-primary-dark: #d16805;
+  --color-background-light: #f8f7f5;
+  --color-background-dark: #181411;
+  --color-surface-dark: #27211b;
+  --color-surface-border: #393028;
+  --color-text-main: #FFFFFF;
+  --color-text-muted: #baab9c;
+  --color-card-dark: #221910;
+  --color-border-dark: #393028;
+  --font-display: "Space Grotesk", sans-serif;
+}
+
+body {
+  @apply bg-background-dark text-text-main font-display antialiased;
+}
