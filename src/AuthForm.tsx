@@ -19,7 +19,7 @@ export default function AuthForm({ onLogin }: AuthFormProps) {
         setErrorMessage('');
         setSuccessMessage('');
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
+
         if (!email) {
             setErrorMessage('Por favor, ingresa tu email.');
             return false;
@@ -39,8 +39,8 @@ export default function AuthForm({ onLogin }: AuthFormProps) {
     const handleSignUp = async () => {
         if (!validateInputs()) return;
         setLoading(true);
-        
-        // URL de redirección exacta para GitHub Pages
+
+        // La URL de redirección debe incluir la ruta del repositorio en GitHub Pages
         const redirectTo = window.location.origin + window.location.pathname;
 
         const { data, error } = await supabase.auth.signUp({
@@ -50,11 +50,12 @@ export default function AuthForm({ onLogin }: AuthFormProps) {
                 emailRedirectTo: redirectTo
             }
         });
-        
+
         setLoading(false);
         if (error) {
             setErrorMessage('Error al registrarse: ' + error.message);
         } else {
+            // En Supabase, si el usuario ya existe pero no está confirmado, data.user puede venir vacío o sin identidades
             if (data.user && data.user.identities && data.user.identities.length === 0) {
                 setErrorMessage('Este correo ya está registrado. Intenta iniciar sesión.');
             } else {
@@ -101,11 +102,12 @@ export default function AuthForm({ onLogin }: AuthFormProps) {
     };
 
     return (
-        <div className="w-full max-w-md mx-auto p-4 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden" 
-             style={{ backgroundColor: '#181411', border: '1px solid rgba(238, 123, 3, 0.2)' }}>
-            
+        <div className="w-full max-w-md mx-auto p-4 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden"
+            style={{ backgroundColor: '#181411', border: '1px solid rgba(238, 123, 3, 0.2)' }}>
+
+            {/* Decoración sutil */}
             <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl"></div>
-            
+
             <div className="text-center mb-8 relative z-10">
                 <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-primary/30">
                     <span className="material-symbols-outlined text-primary text-4xl">fitness_center</span>
@@ -114,15 +116,16 @@ export default function AuthForm({ onLogin }: AuthFormProps) {
                 <p className="text-gray-500 text-sm mt-1 uppercase tracking-widest font-bold">Fuerza y Disciplina</p>
             </div>
 
+            {/* Selector de Modo (Tabs) */}
             {mode !== 'forgot' && (
                 <div className="flex bg-[#120e0c] p-1 rounded-xl mb-8 border border-white/5 relative z-10">
-                    <button 
+                    <button
                         onClick={() => { setMode('login'); setErrorMessage(''); setSuccessMessage(''); }}
                         className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${mode === 'login' ? 'bg-primary text-black' : 'text-gray-500 hover:text-white'}`}
                     >
                         Entrar
                     </button>
-                    <button 
+                    <button
                         onClick={() => { setMode('signup'); setErrorMessage(''); setSuccessMessage(''); }}
                         className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${mode === 'signup' ? 'bg-primary text-black' : 'text-gray-500 hover:text-white'}`}
                     >
@@ -232,7 +235,7 @@ export default function AuthForm({ onLogin }: AuthFormProps) {
                     </div>
                 )}
             </div>
-            
+
             <div className="mt-8 pt-8 border-t border-white/5 text-center relative z-10">
                 <p className="text-[10px] text-gray-600 uppercase tracking-[0.2em] font-medium">
                     Plataforma de entrenamiento de Élite
