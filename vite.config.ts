@@ -7,16 +7,13 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
   return {
-    base: './',
+    base: '/sixPack/',
     plugins: [
       react(),
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
-        injectRegister: 'script',
-        devOptions: {
-          enabled: true, // Habilita PWA en desarrollo para poder probarla
-        },
+        includeAssets: ['icon.svg', 'apple-touch-icon.png'],
         manifest: {
           name: 'SixPackCreator',
           short_name: 'SixPack',
@@ -24,29 +21,31 @@ export default defineConfig(({ mode }) => {
           theme_color: '#181411',
           background_color: '#181411',
           display: 'standalone',
+          scope: '/sixPack/',
+          start_url: '/sixPack/',
           icons: [
             {
               src: 'icon.svg',
-              sizes: 'any',
-              type: 'image/svg+xml'
-            },
-            {
-              src: 'icon.svg',
               sizes: '192x192',
-              type: 'image/svg+xml'
-            },
-            {
-              src: 'icon.svg',
-              sizes: '512x512',
-              type: 'image/svg+xml'
+              type: 'image/svg+xml',
+              purpose: 'any'
             },
             {
               src: 'icon.svg',
               sizes: '512x512',
               type: 'image/svg+xml',
-              purpose: 'any maskable'
+              purpose: 'any'
+            },
+            {
+              src: 'icon.svg',
+              sizes: '512x512',
+              type: 'image/svg+xml',
+              purpose: 'maskable'
             }
           ]
+        },
+        devOptions: {
+          enabled: true
         }
       })
     ],
@@ -57,11 +56,6 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': path.resolve(__dirname, '.'),
       },
-    },
-    server: {
-      // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
-      hmr: process.env.DISABLE_HMR !== 'true',
     },
   };
 });
